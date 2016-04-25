@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |spec|
   spec.name          = "pry-globs"
-  spec.version       = "0.1.0"
+  spec.version       = "0.1.1"
   spec.authors       = ["dariodaic"]
   spec.email         = ["dariodaic5.1@gmail.com"]
   spec.homepage      = "https://github.com/dariodaic/pry-globs"
