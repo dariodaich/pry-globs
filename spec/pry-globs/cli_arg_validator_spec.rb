@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 RSpec.describe CLIArgValidator, messangers: true do
-  let (:cli_arg) { double("CLIArg") }
   subject(:cli_arg_validator) { CLIArgValidator.new(cli_arg) }
+  let (:cli_arg) { double("CLIArg") }
 
   def stub_methods(obj, methods)
     methods.each do |method_name, return_value|
@@ -10,92 +10,144 @@ RSpec.describe CLIArgValidator, messangers: true do
     end
   end
 
-  context "when options and identifiers are valid" do
-    before do
-      stub_methods(cli_arg, options: ["-e"], identifiers: ["$0"], empty?: false)
-    end
+  describe "#args_invalid?" do
+    context "with valid option passed" do
+      context "with valid identifier" do
+        it "returns false" do
+          stub_methods(cli_arg, options: ["-e"], identifiers: ["$0"], empty?: false)
+          expect(cli_arg_validator.args_invalid?).to be(false)
+        end
+      end
 
-    describe "#args_invalid?" do
-      it "checks if arguments passed are valid" do
-        expect(cli_arg_validator.args_invalid?).to be(false)
+      context "with invalid number of identifiers" do
+        it "returns true" do
+          stub_methods(cli_arg, options: ["-e"], identifiers: ["$0", "RUBY_VERSION"], empty?: false)
+          expect(cli_arg_validator.args_invalid?).to be(true)
+        end
+      end
+
+      context "with malformed identifier" do
+        it "returns true" do
+          stub_methods(cli_arg, options: ["-e"], identifiers: ["InVaLid_ToKe$"], empty?: false)
+          expect(cli_arg_validator.args_invalid?).to be(true)
+        end
       end
     end
 
-    describe "#args_invalid_msg" do
-      it "prints error messages" do
-        expect(cli_arg_validator.args_invalid_msg).to eq("")
+    context "with invalid option passed" do
+      context "with valid identifer" do
+        it "returns true" do
+          stub_methods(cli_arg, options: ["-a"], identifiers: ["$0"], empty?: false)
+          expect(cli_arg_validator.args_invalid?).to be(true)
+        end
+      end
+
+      context "with invalid number of identifiers" do
+        it "returns true" do
+          stub_methods(cli_arg, options: ["-a"], identifiers: ["$0", "RUBY_VERSION"], empty?: false)
+          expect(cli_arg_validator.args_invalid?).to be(true)
+        end
+      end
+
+      context "with malformed identifier" do
+        it "returns true" do
+          stub_methods(cli_arg, options: ["-a"], identifiers: ["InVaLid_ToKe$"], empty?: false)
+          expect(cli_arg_validator.args_invalid?).to be(true)
+        end
+      end
+    end
+
+    context "without option passed" do
+      context "with valid identifer" do
+        it "returns true" do
+          stub_methods(cli_arg, options: [], identifiers: ["$0"], empty?: false)
+          expect(cli_arg_validator.args_invalid?).to be(false)
+        end
+      end
+
+      context "with invalid number of identifiers" do
+        it "returns true" do
+          stub_methods(cli_arg, options: [], identifiers: ["$0", "RUBY_VERSION"], empty?: false)
+          expect(cli_arg_validator.args_invalid?).to be(true)
+        end
+      end
+
+      context "with malformed identifier" do
+        it "returns true" do
+          stub_methods(cli_arg, options: [], identifiers: ["InVaLid_ToKe$"], empty?: false)
+          expect(cli_arg_validator.args_invalid?).to be(true)
+        end
       end
     end
   end
 
-  context "when no options are passed" do
-    before do
-      stub_methods(cli_arg, options: [], identifiers: ["$0"], empty?: false)
-    end
+  describe "#args_invalid_msg" do
+    context "with valid option passed" do
+      context "with valid identifier" do
+        it "returns correct message" do
+          stub_methods(cli_arg, options: ["-e"], identifiers: ["$0"], empty?: false)
+          expect(cli_arg_validator.args_invalid_msg).to eq("")
+        end
+      end
 
-    describe "#args_invalid?" do
-      it "checks if arguments passed are valid" do
-        expect(cli_arg_validator.args_invalid?).to be(false)
+      context "with invalid number of identifiers" do
+        it "returns correct message" do
+          stub_methods(cli_arg, options: ["-e"], identifiers: ["$0", "RUBY_VERSION"], empty?: false)
+          expect(cli_arg_validator.args_invalid_msg).to eq(error_messanger.invalid_identifier_count)
+        end
+      end
+
+      context "with malformed identifier" do
+        it "returns correct message" do
+          stub_methods(cli_arg, options: ["-e"], identifiers: ["InVaLid_ToKe$"], empty?: false)
+          expect(cli_arg_validator.args_invalid_msg).to eq(error_messanger.invalid_identifier)
+        end
       end
     end
 
-    describe "#args_invalid_msg" do
-      it "prints error messages" do
-        expect(cli_arg_validator.args_invalid_msg).to eq("")
+    context "with invalid option passed" do
+      context "with valid identifer" do
+        it "returns correct message" do
+          stub_methods(cli_arg, options: ["-a"], identifiers: ["$0"], empty?: false)
+          expect(cli_arg_validator.args_invalid_msg).to eq(error_messanger.option_invalid)
+        end
       end
-    end
-  end
 
-  context "when identifiers are invalid" do
-    before do
-      stub_methods(cli_arg, options: ["-e"], identifiers: [], empty?: false)
-    end
-
-    describe "#args_invalid?" do
-      it "checks if arguments passed are valid" do
-        expect(cli_arg_validator.args_invalid?).to be(true)
+      context "with invalid number of identifiers" do
+        it "returns correct message" do
+          stub_methods(cli_arg, options: ["-a"], identifiers: ["$0", "RUBY_VERSION"], empty?: false)
+          expect(cli_arg_validator.args_invalid_msg).to eq(error_messanger.invalid_option_and_identifier_count)
+        end
       end
-    end
 
-    describe "#args_invalid_msg" do
-      it "prints error messages" do
-        expect(cli_arg_validator.args_invalid_msg).to eq(error_messanger.identifier_invalid)
-      end
-    end
-  end
-
-  context "when options are invalid" do
-    before do
-      stub_methods(cli_arg, options: ["-a"], identifiers: ["$0"], empty?: false)
-    end
-
-    describe "#args_invalid?" do
-      it "checks if arguments passed are valid" do
-        expect(cli_arg_validator.args_invalid?).to be(true)
+      context "with malformed identifier" do
+        it "returns correct message" do
+          stub_methods(cli_arg, options: ["-a"], identifiers: ["InVaLid_ToKe$"], empty?: false)
+          expect(cli_arg_validator.args_invalid_msg).to eq(error_messanger.invalid_option_and_malformed_identifier)
+        end
       end
     end
 
-    describe "#args_invalid_msg" do
-      it "prints error messages" do
-        expect(cli_arg_validator.args_invalid_msg).to eq(error_messanger.option_invalid)
+    context "without option passed" do
+      context "with valid identifer" do
+        it "returns correct message" do
+          stub_methods(cli_arg, options: [], identifiers: ["$0"], empty?: false)
+          expect(cli_arg_validator.args_invalid_msg).to eq("")
+        end
       end
-    end
-  end
 
-  context "when options and identifiers are invalid" do
-    before do
-      stub_methods(cli_arg, options: ["-a"], identifiers: ["$0", "RUBY_VERSION"], empty?: false)
-    end
-
-    describe "#args_invalid?" do
-      it "checks if arguments passed are valid" do
-        expect(cli_arg_validator.args_invalid?).to be(true)
+      context "with invalid number of identifiers" do
+        it "returns correct message" do
+          stub_methods(cli_arg, options: [], identifiers: ["$0", "RUBY_VERSION"], empty?: false)
+          expect(cli_arg_validator.args_invalid_msg).to eq(error_messanger.invalid_identifier_count)
+        end
       end
-    end
 
-    describe "#args_invalid_msg" do
-      it "prints error messages" do
-        expect(cli_arg_validator.args_invalid_msg).to eq(error_messanger.all_args_invalid)
+      context "with malformed identifier" do
+        it "returns correct message" do
+          stub_methods(cli_arg, options: [], identifiers: ["InVaLid_ToKe$"], empty?: false)
+          expect(cli_arg_validator.args_invalid_msg).to eq(error_messanger.invalid_identifier)
+        end
       end
     end
   end
