@@ -4,10 +4,6 @@ Pry::Commands.create_command "globs" do
   description "Global variables, documented."
 
   def process
-    if args.size > 1
-      raise Pry::CommandError, "You can pass only one global variable identifier."
-    end
-
-    output.puts Globs.find(args.first)
+    output.puts Globs.new(args).get_identifier_description
   end
 end

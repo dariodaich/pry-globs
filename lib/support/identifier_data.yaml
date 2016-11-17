@@ -1,9 +1,25 @@
---- # Ruby's global variables
-  $!: The exception information message set by ‘raise’.
+# Ruby's constants and global variables
+constants:
+  ENV:  The hash contains current environment variables.
+  ARGV: The alias to the $*.
+  RUBY_VERSION:
+    definition: |
+      The ruby version string (VERSION was deprecated).
+    explanation: |
+      Simply print out running version of Ruby.
+      Does not provide information on patch.
+
+      > p RUBY_VERSION # => "2.3.0"
+  RUBY_RELEASE_DATE: The release date string.
+  RUBY_PLATFORM: The platform identifier.
+global_variables:
+  $!:
+    definition: The exception information message set by ‘raise’.
+    explanation: This is an explanation.
   $@: Array of backtrace of the last exception thrown.
   $&: The string matched by the last successful match.
   $`: The string to the left of the last successful match.
-  #$"'": The string to the right of the last successful match.
+  $': The string to the right of the last successful match.
   $+: The highest group matched by the last successful match.
   $1: The Nth group of the last successful match. May be > 1.
   $~: The information about the last match in the current scope.
@@ -16,13 +32,19 @@
   $<: The virtual concatenation file of the files given on command line (or from $stdin if no files were given).
   $>: The default output for print, printf. $stdout by default.
   $_: The last input line of string by gets or readline.
-  $0: Contains the name of the script being executed. May be assignable.
-  $*: Command line arguments given for the script sans args.
+  $0:
+    definition: |
+      Contains the name of the script being executed. May be assignable.
+    explanation: |
+      If name of the current running Ruby script is "foobar.rb", then:
+
+      > p $0 # => "foobar.rb"
+  $*: Command line arguments passed to a script.
   $$: The process number of the Ruby running this script.
   $?: The status of the last executed child process. This value is thread-local.
   $:: Load path for scripts and binary modules by load or require.
-  $\:: The array contains the module names loaded by require.
-  $-o: The alias to $/
+  $": The array contains the module names loaded by require.
+  $-0: The alias to $/
   $-a: True if option -a is set. Read-only variable.
   $-d: The alias of $DEBUG.
   $-F: The alias to $;.
@@ -32,17 +54,12 @@
   $-p: True if option -p is set. Read-only variable.
   $-v: An alias of $VERBOSE.
   $-w: An alias of $VERBOSE.
-  $LOADED_FEATURES: The alias to the $"'".
-  $FILENAME: Current input file from $<. Same as $<.filename.
-  $LOAD_PATH: The alias to the $:.
   $stderr: The current standard error output.
   $stding: The current standard input.
   $stdout: The current standard output.
   $ARGV: An alias of $*.
+  $LOADED_FEATURES: The alias to the $"'".
+  $FILENAME: Current input file from $<. Same as $<.filename.
+  $LOAD_PATH: The alias to the $:.
   $VERBOSE: The verbose flag, which is set by the -w or -v switch. Setting this to a true value enables warnings as if -w or -v were given on the command line. Setting this to nil disables warnings, including from Kernel#warn.
   $DEBUG: The debug flag, which is set by the -d switch. Enabling debug output prints each exception raised to $stderr.
-  ENV:  The hash contains current environment variables.
-  ARGV: The alias to the $*.
-  RUBY_VERSION: The ruby version string (VERSION was deprecated).
-  RUBY_RELEASE_DATE: The release date string.
-  RUBY_PLATFORM: The platform identifier.

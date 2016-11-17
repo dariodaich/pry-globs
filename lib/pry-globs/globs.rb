@@ -1,19 +1,28 @@
-require 'yaml'
+require "yaml"
+require_relative "cli_arg"
+require_relative "cli_arg_validator"
+require_relative "ruby_identifier"
+require_relative "identifier_table"
 
 class Globs
-  class << self
+  attr_reader :cli_args, :ruby_identifier
 
-    def find(global_var)
-      ruby_globals = load_yaml
+  def initialize(args)
+    @cli_args = CLIArg.new(args)
+    @ruby_identifier = RubyIdentifier.new(cli_args, IdentifierTable.new)
+  end
 
-      return "Unexisting identifier." unless ruby_globals.key?(global_var)
+  def get_identifier_description
+    return cli_args.invalid_msg if cli_args.invalid?
 
-      ruby_globals.fetch(global_var)
-    end
+    ruby_identifier.description
+  end
 
-    def load_yaml
-      global_variables_path = File.expand_path('../global_variables.yaml', __FILE__)
-      @ruby_variables ||= YAML.load_file(global_variables_path)
-    end
+  private
+
+  def identifier_table_path
+    File.expand_path("../identifier_data.yaml", __FILE__)
   end
 end
+
+# puts Globs.new(["-e", "HAHA"]).get_identifier_description
