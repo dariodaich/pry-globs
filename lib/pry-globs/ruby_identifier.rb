@@ -10,6 +10,14 @@ class RubyIdentifier
     definition + explanation
   end
 
+  def absent_from_table?
+    token_data.nil?
+  end
+
+  def absent_msg
+    absent_from_table? ? "There is no information about '#{token}'. Please open a PR." : ""
+  end
+
   private
 
   def token
@@ -29,6 +37,6 @@ class RubyIdentifier
   end
 
   def explanation
-    cli_args.option_present? ? "\n\n#{token_data["explanation"]}" : ''
+    cli_args.option_present? ? "\n\n#{token_data["explanation"]}" : ""
   end
 end
