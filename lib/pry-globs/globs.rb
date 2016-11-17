@@ -5,7 +5,8 @@ require_relative "ruby_identifier"
 require_relative "identifier_table"
 
 class Globs
-  attr_reader :cli_args, :ruby_identifier
+  attr_reader :cli_args
+  attr_accessor :ruby_identifier
 
   def initialize(args)
     @cli_args = CLIArg.new(args)
@@ -13,7 +14,8 @@ class Globs
   end
 
   def get_identifier_description
-    return cli_args.invalid_msg if cli_args.invalid?
+    return cli_args.invalid_msg       if cli_args.invalid?
+    return ruby_identifier.absent_msg if ruby_identifier.absent_from_table?
 
     ruby_identifier.description
   end
@@ -25,4 +27,4 @@ class Globs
   end
 end
 
-# puts Globs.new(["-e", "HAHA"]).get_identifier_description
+puts Globs.new(["-e", "$haha"]).get_identifier_description
