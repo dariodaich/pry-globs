@@ -13,10 +13,4 @@ class Globs
 
     ruby_identifier.description
   end
-
-  private
-
-  def identifier_table_path
-    File.expand_path('../identifier_data.yaml', __FILE__)
-  end
 end
