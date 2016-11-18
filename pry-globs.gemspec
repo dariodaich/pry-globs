@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.homepage = 'https://github.com/dariodaic/pry-globs'
   spec.license  = 'MIT'
   spec.post_install_message =
-    "Meaning of Ruby's cryptic global variables and constants under your fingertips!\n\n"
+    "Hidden meaning of Ruby's cryptic global variables and constants revealed.\n\nThank you for installing pry-globs!"
 
   spec.files = Dir['lib/pry-globs.rb', 'lib/pry-globs/*', 'lib/support/*']
   spec.require_paths = ['lib']
