@@ -1,9 +1,3 @@
-require "yaml"
-require_relative "cli_arg"
-require_relative "cli_arg_validator"
-require_relative "ruby_identifier"
-require_relative "identifier_table"
-
 class Globs
   attr_reader :cli_args
   attr_accessor :ruby_identifier
@@ -26,5 +20,3 @@ class Globs
     File.expand_path("../identifier_data.yaml", __FILE__)
   end
 end
-
-puts Globs.new(["-e", "$haha"]).get_identifier_description
