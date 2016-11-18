@@ -2,6 +2,9 @@ pry_globs_dir    = File.expand_path('../../lib/pry-globs', __FILE__)
 spec_support_dir = File.expand_path('../support', __FILE__)
 $LOAD_PATH.unshift(pry_globs_dir, spec_support_dir)
 
+require 'simplecov'
+SimpleCov.start
+
 # Stlib
 require 'yaml'
 

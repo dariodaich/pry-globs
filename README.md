@@ -1,3 +1,4 @@
+[![Code Climate](https://codeclimate.com/github/DarioDaic/pry-globs/badges/gpa.svg)](https://codeclimate.com/github/DarioDaic/pry-globs)
 [![Build Status](https://travis-ci.org/DarioDaic/pry-globs.svg?branch=master)](https://travis-ci.org/DarioDaic/pry-globs)
 
 # Pry::Globs
