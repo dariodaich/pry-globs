@@ -1,4 +1,5 @@
 [![Code Climate](https://codeclimate.com/github/DarioDaic/pry-globs/badges/gpa.svg)](https://codeclimate.com/github/DarioDaic/pry-globs)
+[![Test Coverage](https://codeclimate.com/github/DarioDaic/pry-globs/badges/coverage.svg)](https://codeclimate.com/github/DarioDaic/pry-globs/coverage)
 [![Build Status](https://travis-ci.org/DarioDaic/pry-globs.svg?branch=master)](https://travis-ci.org/DarioDaic/pry-globs)
 
 # Pry::Globs
