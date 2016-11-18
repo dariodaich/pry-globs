@@ -12,6 +12,6 @@ class IdentifierTable
   end
 
   def identifier_data_file_path
-    File.expand_path("../../support/identifier_data.yaml", __FILE__)
+    File.expand_path('../../support/identifier_data.yaml', __FILE__)
   end
 end

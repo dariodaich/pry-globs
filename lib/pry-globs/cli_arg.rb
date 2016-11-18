@@ -4,8 +4,8 @@ class CLIArg
 
   def initialize(args)
     @args        = args
-    @options     = get_options
-    @identifiers = get_identifiers
+    @options     = fetch_options
+    @identifiers = fetch_identifiers
     @validator   = CLIArgValidator.new(self)
   end
 
@@ -33,16 +33,16 @@ class CLIArg
 
   attr_reader :args
 
-  def get_options
-    args.select { |arg| arg[0] == "-" }
+  def fetch_options
+    args.select { |arg| arg[0] == '-' }
   end
 
-  def get_identifiers
-    args.select { |arg| arg[0] != "-" }
+  def fetch_identifiers
+    args.select { |arg| arg[0] != '-' }
   end
 
   def option
-    options.first || ""
+    options.first || ''
   end
 
   def identifier

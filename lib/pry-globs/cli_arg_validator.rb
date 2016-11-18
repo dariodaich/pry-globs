@@ -1,11 +1,12 @@
 class CLIArgValidator
-  CONSTANT_TOKENS = ("A".."Z").to_a << "_"
+  CONSTANT_TOKENS = ('A'..'Z').to_a << '_'
   ERROR_MESSAGES = {
-    "invalid_options"           => "Only one option is supported: '-e (explanation)'.",
-    "invalid_identifier_count"  => "Globs accepts only one argument: e.g. '$!'.",
-    "invalid_identifier_token"  => "Invalid Ruby identifier. It has to be valid global variable (\"$0\") or a valid constant token. (\"RUBY_VERSION\")",
-    "invalid_argument_presence" => "You have to pass at least one argument and it has to be an identifier.",
-  }
+    'invalid_options'           => 'Only one option is supported: \'-e (explanation)\'.',
+    'invalid_identifier_count'  => "Globs accepts only one argument: e.g. '$!'.",
+    'invalid_identifier_token'  =>
+      'Invalid Ruby identifier. It has to be valid global variable ("$0") or a valid constant token. ("RUBY_VERSION")',
+    'invalid_argument_presence' => 'You have to pass at least one argument and it has to be an identifier.'
+  }.freeze
 
   attr_reader :cli_args
 
@@ -18,7 +19,7 @@ class CLIArgValidator
   end
 
   def args_invalid_msg
-    method_names = ["options", "identifier_count", "identifier_token", "argument_presence"]
+    method_names = %w(options identifier_count identifier_token argument_presence)
     method_names.each_with_object([]) do |method, memo|
       method = "invalid_#{method}"
       memo << ERROR_MESSAGES[method] if send("#{method}?")
@@ -32,7 +33,7 @@ class CLIArgValidator
   end
 
   def incorrect_option?
-    option_present? && cli_args.options.first != "-e"
+    option_present? && cli_args.options.first != '-e'
   end
 
   def option_present?
@@ -60,7 +61,7 @@ class CLIArgValidator
   end
 
   def valid_global_variable?
-    cli_args_identifier[0] == "$"
+    cli_args_identifier[0] == '$'
   end
 
   def valid_ruby_constant?

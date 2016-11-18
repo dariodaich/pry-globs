@@ -7,7 +7,7 @@ class Globs
     @ruby_identifier = RubyIdentifier.new(cli_args, IdentifierTable.new)
   end
 
-  def get_identifier_description
+  def identifier_description
     return cli_args.invalid_msg       if cli_args.invalid?
     return ruby_identifier.absent_msg if ruby_identifier.absent_from_table?
 
@@ -17,6 +17,6 @@ class Globs
   private
 
   def identifier_table_path
-    File.expand_path("../identifier_data.yaml", __FILE__)
+    File.expand_path('../identifier_data.yaml', __FILE__)
   end
 end

@@ -15,13 +15,7 @@ class RubyIdentifier
   end
 
   def absent_msg
-    message =<<~MSG
-      There is no information about '#{token}'.
-
-      Please submit data and open a PR!
-    MSG
-
-    absent_from_table? ? message : ""
+    absent_from_table? ? "There is no information about '#{token}'.\n\nPlease submit data and open a PR!\n" : ''
   end
 
   private
@@ -31,11 +25,11 @@ class RubyIdentifier
   end
 
   def identifier_type
-    @identifier_type ||= (token[0] == "$" ? "global_variables" : "constants")
+    @identifier_type ||= (token[0] == '$' ? 'global_variables' : 'constants')
   end
 
   def definition
-    token_data["definition"]
+    token_data['definition']
   end
 
   def token_data
@@ -43,6 +37,6 @@ class RubyIdentifier
   end
 
   def explanation
-    cli_args.option_present? ? "\n\n#{token_data["explanation"]}" : ""
+    cli_args.option_present? ? "\n\n#{token_data['explanation']}" : ''
   end
 end
