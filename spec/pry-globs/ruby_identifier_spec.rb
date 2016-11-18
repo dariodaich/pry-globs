@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe RubyIdentifier do
+RSpec.describe RubyIdentifier, messangers: true do
   let(:cli_args)            { instance_double("CLIArg") }
   let(:identifier_table)    { IdentifierTable.new }
   let(:definition)          { "Contains the name of the script being executed. May be assignable.\n" }
@@ -59,8 +59,7 @@ RSpec.describe RubyIdentifier do
       end
 
       it "returns message informing about absence of the identifier" do
-        absent_message = "There is no information about 'UNKNOWN_CONSTANT'. Please open a PR."
-        expect(ruby_identifier.absent_msg).to eq absent_message
+        expect(ruby_identifier.absent_msg).to eq(identifier.absent_constant)
       end
     end
 
@@ -70,7 +69,7 @@ RSpec.describe RubyIdentifier do
       end
 
       it "returns empty string" do
-        expect(ruby_identifier.absent_msg).to eq ""
+        expect(ruby_identifier.absent_msg).to eq("")
       end
     end
   end

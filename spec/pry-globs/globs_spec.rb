@@ -83,17 +83,15 @@ RSpec.describe Globs, messangers: true do
     context "when ruby identifier is not present in the table" do
       context "when it is a global variable" do
         it "returns message informing of identifier's absence" do
-          expect(Globs.new(["$xyz"]).get_identifier_description).to(
-            eq "There is no information about '$xyz'. Please open a PR."
-          )
+          globs = Globs.new(["$xyz"])
+          expect(globs.get_identifier_description).to eq(identifier.absent_global_var)
         end
       end
 
       context "when it is a constant" do
         it "returns message informing of identifier's absence" do
-          expect(Globs.new(["UNKNOWN_IDENTIFIER"]).get_identifier_description).to(
-            eq "There is no information about 'UNKNOWN_IDENTIFIER'. Please open a PR."
-          )
+          globs = Globs.new(["UNKNOWN_CONSTANT"])
+          expect(globs.get_identifier_description).to eq(identifier.absent_constant)
         end
       end
     end
