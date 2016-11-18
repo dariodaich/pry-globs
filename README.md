@@ -1,3 +1,5 @@
+![Build status](https://travis-ci.org/DarioDaic/pry-globs.svg?branch=master)
+
 # Pry::Globs
 Check out a description of Ruby's notoriously cryptic global variables within a Pry
 session.
