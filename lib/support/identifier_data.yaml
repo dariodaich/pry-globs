@@ -1,27 +1,203 @@
-# Ruby's constants and global variables
 constants:
-  ENV:  The hash contains current environment variables.
-  ARGV: The alias to the $*.
+  ARGV:
+    definition: |
+      Definition:
+      Command line arguments passed to a script.
+      Also, the alias to the '$*' global variable.
+    explanation: |
+      Explanation:
+      It is possible to pass arguments to a Ruby script from the command line.
+
+      Given the script 'foo.rb' with contents:
+      > p ARGV
+
+      When it is run with 'ruby foo.rb hi you there', it will give the output:
+      > ["hi", "you", "there"]
+  ARGF:
+    definition: |
+      Definition:
+      The virtual concatenation file of the files given on command line
+      (or from $stdin if no files were given).
+      Also, alias to the '$<' global variable.
+    explanation: |
+      Explanation:
+      Given there are two .txt files within a directory..
+      hello.txt
+      > Hello there
+
+      john_doe.txt
+      > John Doe!
+
+      ..and a Ruby script.
+      concatenated_files.rb
+      > p ARGF.read
+      > p ARGF.read
+
+      When the script gets called 'ruby concatenated_files.rb hello.txt john_doe.txt',
+      it will produce the following output:
+      > "Hello there\nJohn Doe!\n"
+      > nil
+
+      Note that once the contents of ARGF have been read, they are removed.
+
+      ARGF also includes Enumerable module, so it is possible to use its methods
+      for manipulating contents of files passed to the script.
+  DATA:
+    definition: |
+      Definition:
+      The file object of the script, pointing just after __END__.
+    explanation: |
+      Explanation:
+      Ruby puts all data after __END__ in the file object and assigns it
+      to a DATA constant. It is possible to fetch that data by sending a
+      #read message to that file object.
+
+      Given this simple script 'foo.rb':
+      > puts "Check this out.."
+      > p DATA
+      > __END__
+      > Ruby
+      > has
+      > tricks.
+
+      Output of running 'ruby foo.rb' will be:
+      > Check this out.
+      > "Ruby\nhas\ntricks."
+  ENV:
+    definition: |
+      Definition:
+      The hash which contains current environment variables.
+    explanation: |
+      Explanation:
+      When printed out it will display names and values of
+      current environment variables within the shell session.
+
+      > p ENV # { "PAGER" => less, "RUBY_VERSION" => "ruby-2.3.0", ... }
   RUBY_VERSION:
     definition: |
+      Definition:
       The ruby version string (VERSION was deprecated).
     explanation: |
+      Explanation:
       Simply print out running version of Ruby.
       Does not provide information on patch.
 
       > p RUBY_VERSION # => "2.3.0"
-  RUBY_RELEASE_DATE: The release date string.
-  RUBY_PLATFORM: The platform identifier.
+  RUBY_RELEASE_DATE:
+    definition: |
+      Definition:
+      The release date string.
+    explanation: |
+      Explanation:
+      Prints out date (Y-M-D) when this version of Ruby was released.
+
+      > p RUBY_RELEASE_DATE # => "2015-12-25"
+  RUBY_PLATFORM:
+    definition: |
+      Definition:
+      The platform identifier.
+    explanation: |
+      Explanation:
+      > p RUBY_PLATFORM # "x86_64-darwin16"
 global_variables:
   $!:
-    definition: The exception information message set by ‘raise’.
-    explanation: This is an explanation.
-  $@: Array of backtrace of the last exception thrown.
-  $&: The string matched by the last successful match.
-  $`: The string to the left of the last successful match.
-  $': The string to the right of the last successful match.
+    definition: |
+      Definition:
+      The exception information message set by 'raise'.
+    explanation: |
+      Explanation:
+      It contains the exception when it is raised but not yet handled.
+      In most cases it can be accessed within the 'rescue' clause.
+
+      Given the following code..
+      > begin
+      >   5 / 0
+      > rescue
+      >   p $! # => #<ZeroDivisionError: divided by 0>
+      > end
+
+      Or when raising exception manually..
+      > class MyError < StandardError
+      > end
+      >
+      > begin
+      >   raise MyError, "Raise it high."
+      > rescue MyError
+      >   p $!         # => #<MyError: Raise it high.>
+      >   p $!.message # => "Raise it high."
+      > end
+  $@:
+    definition: |
+      Definition:
+      Array of backtrace of the last exception thrown.
+    explanation: |
+      Explanation:
+      It will hold an array of strings that provide backtrace of the exception.
+
+      Given the following code..
+      > begin
+      >   5 / 0
+      > rescue
+      >   p $@ # => ["example.rb:2 in `/'", "example.rb:2:in `<main>'"]
+      > end
+  $&:
+    definition: |
+      Definition:
+      The string matched by the last successful match.
+    explanation: |
+      Explanation:
+      It holds the string object of the last successful Regexp#match.
+      Essentially it stores matched text in contrast to MatchData object.
+
+      > oscar = "Oscar De La Hoya"
+      > regexp = /Oscar\s\D{5}/
+      > regexp.match(oscar)
+      > p $&       # => "Oscar De La"
+      >
+      > oscar = "Oscar Wilde"
+      > regexp.match(oscar)
+      > p $&       # => "Oscar Wilde"
+      > p $&.class # => String
+  $`:
+    definition: |
+      Definition:
+      The string to the left of the last successful match.
+    explanation: |
+      Explanation:
+      It stores the string left from the last successful Regexp#match.
+      String it stores is an "unsuccessful" match.
+
+      > /r/.match "Marlo"
+      > p $` # => "Ma"
+  $':
+    definition: |
+      Definition:
+      The string to the right of the last successful Regexp#match.
+    explanation: |
+      Explanation:
+      It stores the string right from the last successful match.
+      String it stores is an "unsuccessful" match.
+
+      > /r/.match "Marlo"
+      > p $' # => "lo"
+  $1:
+    definition: |
+      Definition:
+      The Nth group of the last successful match. May be > 1.
+    explanation: |
+      Explanation
+      When capturing is used within a regexp, captured results are assigned to
+      global variables by the order they are matched. Accordingly, '$1' would
+      contain first captured group, '$2' second one etc.
+
+      > day = "Such a nice day."
+      > result = /(S[uio].)h(\s[aeiou])/.match day
+      > p result    # => MatchData "Such a" 1:"Suc" 2:" a">
+      > p result[1] # => "Suc"
+      > p result[2] # => " a"
+      > p $1        # => "Suc"
+      > p $2        # => " a"
   $+: The highest group matched by the last successful match.
-  $1: The Nth group of the last successful match. May be > 1.
   $~: The information about the last match in the current scope.
   $=: The flag for case insensitive, nil by default.
   $/: The input record separator, newline by default.
