@@ -169,7 +169,7 @@ global_variables:
 
       > /r/.match "Marlo"
       > p $` # => "Ma"
-  $':
+  "$'":
     definition: |
       Definition:
       The string to the right of the last successful Regexp#match.
@@ -179,7 +179,7 @@ global_variables:
       String it stores is an "unsuccessful" match.
 
       > /r/.match "Marlo"
-      > p $' # => "lo"
+      > p $"'" # => "lo"
   $1:
     definition: |
       Definition:
@@ -197,7 +197,22 @@ global_variables:
       > p result[2] # => " a"
       > p $1        # => "Suc"
       > p $2        # => " a"
-  $+: The highest group matched by the last successful match.
+  $+:
+    definition: |
+      Definition:
+      Contains last capture group of the MatchData object.
+    explanation: |
+      Explanation:
+      It will contain the last group of all of them that are matched using
+      captures within a regexp.
+
+      > jd = "John Doe"
+      > rxp = /^([A-Z])...\s([A-Z])/
+      > match_data = rxp.match(jd)
+      > p $+ # => "D"
+
+      Last match can also be fetched this way:
+      > match_data[-1] # => "D"
   $~: The information about the last match in the current scope.
   $=: The flag for case insensitive, nil by default.
   $/: The input record separator, newline by default.
@@ -219,7 +234,7 @@ global_variables:
   $$: The process number of the Ruby running this script.
   $?: The status of the last executed child process. This value is thread-local.
   $:: Load path for scripts and binary modules by load or require.
-  $": The array contains the module names loaded by require.
+  "$\"": The array contains the module names loaded by require.
   $-0: The alias to $/
   $-a: True if option -a is set. Read-only variable.
   $-d: The alias of $DEBUG.
