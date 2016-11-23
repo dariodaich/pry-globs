@@ -213,10 +213,50 @@ global_variables:
 
       Last match can also be fetched this way:
       > match_data[-1] # => "D"
-  $~: The information about the last match in the current scope.
-  $=: The flag for case insensitive, nil by default.
-  $/: The input record separator, newline by default.
-  $\: The output record separator for the print and IO#write. Default is nil.
+  $~:
+    definition: |
+      Definition:
+      The information about the last match in the current scope.
+    explanation: |
+      Explanation:
+      It holds a MatchData object created after a successful match.
+      Therefore, it is equal to the return value of Regexp::last_match.
+      More precise, it is the same object. This way, there is
+      no need to assign the result to a variable.
+
+      > rxp = /Joh[nN]/
+      > string = "Oh, hi JohN!"
+      > p $~                        # => nil
+      > rxp =~ string
+      > p $~                        # => #<MatchData "JohN">
+      > p Regexp.last_match         # => #<MatchData "JohN">
+      > Regexp.last_match == $~     # => true
+      > Regexp.last_match.equal? $~ # => true
+  $=:
+    definition: |
+      Definition:
+      The flag for case insensitive, nil by default.
+    explanation: |
+      Explanation:
+      When referenced, Ruby states, "It is no longer effective".
+  $/:
+    definition: |
+      Definition:
+      The flag for case insensitive, nil by default.
+    explanation: |
+      Explanation:
+      In newer versions of Ruby, it states - "It is no longer effective".
+  $\:
+    definition: |
+      Definition:
+      The output record separator for the print and IO#write. Default is nil.
+    explanation: |
+      Explanation:
+      Value assigned to it, is appended to the end of the output when values are
+      passed to IO#print or when IO.write is called.!
+
+      > $\ = "Nas"
+      > print "Name one cool guy -> " # => Name one cool guy -> Nas
   $,: The output field separator for the print and Array#join.
   $;: The default separator for String#split.
   $.: The current input line number of the last file that was read.
