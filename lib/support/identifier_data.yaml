@@ -284,7 +284,39 @@ global_variables:
       > $; = ','
       > s.split # => ["Have", " to", " do", "it."]
   $.: The current input line number of the last file that was read.
-  $<: The virtual concatenation file of the files given on command line (or from $stdin if no files were given).
+  $<:
+    definition: |
+      Definition:
+      The virtual concatenation file of the files given on command line
+      (or from $stdin if no files were given). Aliased by constant ARGF.
+    explanation: |
+      Explanation:
+      The virtual concatenation file of the files given by command line
+      arguments, or stdin (in case no argument file supplied). $<.file
+      returns the current filename.
+
+      Given there are two .txt files within a directory..
+      hello.txt
+      > Hello there
+
+      john_doe.txt
+      > John Doe!
+
+      ..and a Ruby script.
+      concatenated_files.rb
+      > p $<.file
+      > p $<.read
+      > p $<.file
+      > p $<.read
+      > p $<.file
+
+      Executing the script like so 'ruby concatenated_files.rb hello.txt john_doe.txt',
+      will produce the following output:
+      > #<File:hello.txt>
+      > "Hello there\nJohn Doe!\n"
+      > #<File:john_doe.txt (closed)>
+      > nil
+      > #<File:john_doe.txt (closed)>
   $>: The default output for print, printf. $stdout by default.
   $_: The last input line of string by gets or readline.
   $0:
