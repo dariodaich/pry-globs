@@ -271,7 +271,18 @@ global_variables:
       > $, = "<>"
       > a.join           # => "1<>2<>3"
       > print 10, 20, 30 # => "10<>20<>30"
-  $;: The default separator for String#split.
+  $;:
+    definition: |
+      Definition:
+      The default separator for String#split.
+    explanation: |
+      Explanation:
+      When set, String#split will split the string on the value assigned to it.
+
+      > s = "Have, to, do, it."
+      > s.split # => ["Have,", "to,", "do,", "it."]
+      > $; = ','
+      > s.split # => ["Have", " to", " do", "it."]
   $.: The current input line number of the last file that was read.
   $<: The virtual concatenation file of the files given on command line (or from $stdin if no files were given).
   $>: The default output for print, printf. $stdout by default.
