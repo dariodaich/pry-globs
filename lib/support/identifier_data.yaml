@@ -257,7 +257,20 @@ global_variables:
 
       > $\ = "Nas"
       > print "Name one cool guy -> " # => Name one cool guy -> Nas
-  $,: The output field separator for the print and Array#join.
+  $,:
+    definition: |
+      Definition:
+      The output field separator for the IO#print and Array#join.
+    explanation: |
+      Explanation:
+      If it is set, it will be used as a separator for joining arguments in
+      IO#print or Array#join.
+
+      > a = [1, 2, 3]
+      > a.join           # => "123"
+      > $, = "<>"
+      > a.join           # => "1<>2<>3"
+      > print 10, 20, 30 # => "10<>20<>30"
   $;: The default separator for String#split.
   $.: The current input line number of the last file that was read.
   $<: The virtual concatenation file of the files given on command line (or from $stdin if no files were given).
