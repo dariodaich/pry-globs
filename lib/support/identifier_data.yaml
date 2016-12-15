@@ -253,7 +253,7 @@ global_variables:
     explanation: |
       Explanation:
       Value assigned to it, is appended to the end of the output when values are
-      passed to IO#print or when IO.write is called.!
+      passed to IO#print or when IO.write is called.
 
       > $\ = "Nas"
       > print "Name one cool guy -> " # => Name one cool guy -> Nas
@@ -279,11 +279,18 @@ global_variables:
       Explanation:
       When set, String#split will split the string on the value assigned to it.
 
-      > s = "Have, to, do, it."
-      > s.split # => ["Have,", "to,", "do,", "it."]
-      > $; = ','
+      > s = "Have- to- do- it."
+      > s.split # => ["Have-", "to-", "do-", "it."]
+      > $; = '-'
       > s.split # => ["Have", " to", " do", "it."]
-  $.: The current input line number of the last file that was read.
+  $.:
+    definition: |
+      Definition:
+      The current input line number of the last file that was read.
+    explanation: |
+      Explanation:
+      There is no explanation for this cryptic global variable.
+      Please contribute and create a PR. Thank you.
   $<:
     definition: |
       Definition:
@@ -317,8 +324,38 @@ global_variables:
       > #<File:john_doe.txt (closed)>
       > nil
       > #<File:john_doe.txt (closed)>
-  $>: The default output for print, printf. $stdout by default.
-  $_: The last input line of string by gets or readline.
+  $>:
+    definition: |
+      Definition:
+      The default output for print, printf. $stdout by default.
+    explanation: |
+      Explanation:
+      Assigning new output stream to $> will cause print to output its
+      arguments to the new output stream.
+
+      Given there is hello.txt file in the current directory, running the
+      following code..
+
+      > print "Check this out...\n" # => "Check this out...\n" gets printed
+      >                             #    out on the command line.
+      > file_hi = File.read("./hello.txt")
+      > $> = file_hi
+      > print "Hi there You!\n"
+      > f.close
+
+      ..will put printed content to the given output stream.
+      In this case it will be a 'hello.txt' file. From the command line:
+      > cat hello.txt # Hi there You!
+  $_:
+    definition: |
+      Definition:
+      The last input line of string by gets or readline.
+    explanation: |
+      Explanation:
+      It gets assigned the last value read by gets or readline.
+
+      > word = gets # => Input from command line "Say 'Hi'."
+      > puts $_     # => "Say 'Hi'."
   $0:
     definition: |
       Contains the name of the script being executed. May be assignable.
@@ -326,27 +363,324 @@ global_variables:
       If name of the current running Ruby script is "foobar.rb", then:
 
       > p $0 # => "foobar.rb"
-  $*: Command line arguments passed to a script.
-  $$: The process number of the Ruby running this script.
-  $?: The status of the last executed child process. This value is thread-local.
-  $:: Load path for scripts and binary modules by load or require.
-  "$\"": The array contains the module names loaded by require.
-  $-0: The alias to $/
-  $-a: True if option -a is set. Read-only variable.
-  $-d: The alias of $DEBUG.
-  $-F: The alias to $;.
-  $-i: In in-place-edit mode, this variable hods the extension, otherwise nil.
-  $-I: The alias to $:.
-  $-l: True if option -l is set. Read-only varaible.
-  $-p: True if option -p is set. Read-only variable.
-  $-v: An alias of $VERBOSE.
-  $-w: An alias of $VERBOSE.
-  $stderr: The current standard error output.
-  $stding: The current standard input.
-  $stdout: The current standard output.
-  $ARGV: An alias of $*.
-  $LOADED_FEATURES: The alias to the $"'".
-  $FILENAME: Current input file from $<. Same as $<.filename.
-  $LOAD_PATH: The alias to the $:.
-  $VERBOSE: The verbose flag, which is set by the -w or -v switch. Setting this to a true value enables warnings as if -w or -v were given on the command line. Setting this to nil disables warnings, including from Kernel#warn.
-  $DEBUG: The debug flag, which is set by the -d switch. Enabling debug output prints each exception raised to $stderr.
+  $*:
+    definition: |
+      Definition:
+      Command line arguments passed to a script.
+      Aliased to the ARGV constant.
+    explanation: |
+      Explanation:
+      It is possible to pass arguments to a Ruby script from the command line.
+
+      Given the script 'foo.rb' with contents:
+      > p $*
+
+      When it is run with 'ruby foo.rb hi you there', it will give the output:
+      > ["hi", "you", "there"]
+  $$:
+    definition: |
+      Definition:
+      Number of the process running the current script. The same identifier
+      is used by shells.
+    explanation: |
+      Explanation:
+      The $$ global variable will return the number of the current process. Simple.
+
+      > p $$ # => e.g. 8993
+  $?:
+    definition: |
+      Definition:
+      The status information on the last executed child process.
+    explanation: |
+      Explanation:
+      When a subprocess is terminated, its information is stored within
+      Process::Status object. Process.wait can be called to wait on termination
+      of any running child processes. In that case, information about the last
+      terminated child process is stored within $?.
+
+      Additional information:
+      If parent process terminates and it does not wait for child processes to
+      exit, those child processes that were still running at the time parent
+      process was terminated will be left running in the operating system.
+      They are known as "zombie processes".
+
+      Example session:
+      > # Firing up a child process
+      > Process.fork do
+      >   puts "Code within the block gets executed within the child process."
+      > end
+      >
+      > # Do important stuff in the parent process
+      > 1 + 1
+      >
+      > # Wait for the termination of running child processes
+      > Process.wait
+      >
+      > # Upon termination of the child process store its information to $?
+      > $?.exitstatus # => e.g. 50501
+      > $?.success?   # => true
+      > $?.stopped?   # => false
+  $::
+    definition: |
+      Definition:
+      Load path for scripts and binary modules by load or require.
+    explanation: |
+      Explanation:
+      List of all directories Ruby searches for a file when Kernel#load and
+      Kernel#require are invoked.
+
+      > p $: # => ["/path/to/dir1", "/path/to/dir2", ...]
+  "$\"":
+    definition: |
+      Definition:
+      The array that includes file paths of all required files.
+    explanation: |
+      Explanation:
+      When requiring an existing file with Kernel#require for the first time,
+      the call will return 'true'. When requiring the same file again it will
+      return 'false'.
+      Based on the contents of the array assigned to '$""', Ruby can inspect
+      if it has already required a file. If it is present, the file does not
+      get required again.
+
+      Say the structure of the current working directory is:
+        - ./foo.rb
+        - ./bar/baz.rb
+      If we require 'baz.rb' from 'foo.rb', then '$"' would contain the path
+      of 'baz.rb' after we require it.
+
+      > # First we make sure to add the directory to Ruby's $LOAD_PATH so that
+      > # it can find the file.
+      > dir = File.expand_path("../bar", __FILE__)
+      > $LOAD_PATH << dir unless $LOAD_PATH.include?(dir)
+      >
+      > # $" still does not contain "/path/to/bar/baz.rb".
+      > # We just added the directory to the $LOAD_PATH.
+      > $".include? "path/to/bar/baz.rb" => false
+      >
+      > # Then we require the file.
+      > require 'baz' # => true
+      >
+      > # After we require it, the path to bar.rb is present in $"
+      > $".include? "path/to/bar/baz.rb" => true
+  $-0:
+    definition: |
+      Definition:
+      Alias to the $/.
+
+      The flag for case insensitive, nil by default.
+    explanation: |
+      Explanation:
+      In newer versions of Ruby, it states - "It is no longer effective".
+  $-a:
+    definition: |
+      Definition:
+      True if option -a is set. Read-only variable.
+    explanation: |
+      Explanation:
+      It turns on auto-split mode when used with -n or -p. In auto-split mode,
+      Ruby executes '$F = $_.split' at beginning of each loop.
+  $-d:
+    definition: |
+      Definition:
+      It turns on both verbose and debugging mode.
+    explanation: |
+      Explanation:
+      Turns on both verbose and debugging mode.
+
+      I suppose you'd rather use Pry instead of debuggin your programs with
+      Ruby's options.
+  $-F:
+    definition: |
+      Definition:
+      Specify input field separator from the command line.
+
+      Alias to $;.
+    explanation: |
+      Explanation:
+      If -F is passed from the command line, its value will get assigned to $-F.
+
+      When $; gets assigned this way, it is a Regexp and not a string.
+
+      $: ruby -F"<" foo.rb
+      > p $;          # => /</
+      > p "It<splits" # => ["It", "splits"]
+  $-i:
+    definition: |
+      Definition:
+      Specifies in-place-edit mode. The extension, if specified, is added to
+      old file name to make a backup copy.
+    explanation: |
+      Explanation:
+      If switch is provided, Ruby will take the contents of the provided file
+      argument and create new file with its contents.
+      New backup file will have the extension provided through the command line
+      along the option itself, such as '-i.bak'.
+
+      With the following files:
+        - og.txt
+          > original content
+        - script.rb
+          > gets
+          > File.open("./og.txt", "w+") { |file| file.puts "new content" }
+
+      When the script gets invoked like so: 'ruby -i.bak script.rb og.txt',
+      new file 'og.txt.bak' will get created with the content of the initial
+      'og.txt file'.
+
+      > $: cat og.txt
+      > $: new content
+      > $: cat og.txt.bak
+      > $: original content
+  $-I:
+    definition: |
+      Definition:
+      Instructs Ruby on where to load the library scripts from. Directory path
+      will be added to the load-path variable ($:).
+    explanation: |
+      Explanation:
+      Providing this option on a command line will put listed directory in the
+      beginning of the list of directories where Ruby will search for library
+      files.
+
+      The following line places current directory on the $LOAD_PATH, meaning
+      it is possible to require files within from the script being executed.
+
+      > $: ruby -I $(pwd) foo.rb
+  $-l:
+    definition: |
+      Definition:
+      True if option -lis set. Read-only variable.
+    explanation: |
+      Explanation:
+      Enables automatic line-ending processing, which means to firstly set $\
+      to the value of $/, and secondly chops every line read using chop!.
+  $-p:
+    definition: |
+      Definition:
+      True if option -p is set. Read-only variable.
+    explanation: |
+      Explanation:
+      Acts mostly as -n switch, but print the value of the variable $_ at the
+      end of each loop.
+  $-v:
+    definition: |
+      Definition:
+      The alias to the $VERBOSE.
+    explanation: |
+      Explanation:
+      Enables verbose mode. Ruby will print its version at the beginning and
+      set the variable $VERBOSE to true. If this switch is given, and no other
+      switches are present, Ruby quits after printing its version.
+  $-w:
+    definition: |
+      Definition:
+      Enables verbose mode without printing version message at the beginning.
+      It set variable '$VERBOSE' to true.
+    explanation: |
+      Explanation:
+      Enables verbose mode. Ruby will NOT print its version at the beginning and
+      set the variable $VERBOSE to true. Some methods print extra messages if
+      this variable is true.
+  $stderr:
+    definition: |
+      Definition:
+      The current standard error output.
+    explanation: |
+      Explanation:
+      Content that will be outputted to standard error stream.
+
+      Ruby script:
+      > $stderr.puts "the content"
+
+      Command line session:
+      > $: ruby script.rb 2> stderr
+      > $: cat stderr
+      > $: the content
+  $stdin:
+    definition: |
+      Definition:
+      The current standard input.
+    explanation: |
+      Explanation:
+      Instance of IO class.
+      Example: takes input from a file passed through the command line.
+
+      Given the file 'hi.txt':
+      > Hi
+      > there.
+      And the script 'foo.rb':
+      > p $stdin.read
+      Running the script like so 'ruby foo.rb < hi.txt',
+      will produce the output:
+      "Hi\nthere.\n"
+  $stdout:
+    definition: |
+      Definition:
+      The current standard output.
+    explanation: |
+      Explanation:
+      Instance of IO class.
+      Example: uses a file as a standard output.
+
+      Given the script:
+      > f = File.open("hello.txt", "w+")
+      > $stdout = f
+      > $stdout.puts "Hi there!"
+      > f.close
+      Contents of the 'hello.txt' will be:
+      > $: cat hello.txt
+      > $: Hi there!
+  $LOADED_FEATURES:
+    definition: |
+      Definition:
+      List of all the features required in the current program.
+    explanation: |
+      Explanation:
+      Before Ruby starts the execution it loads a list of features/files.
+      It loads C extensions, as well as Ruby files.
+      $LOADED_FEATURES gives the list of file paths for each file Ruby
+      requires before it runs the given program.
+      It differs from $LOAD_PATH in that $LOAD_PATH is a list of all directories
+      Ruby searches for when a file is required, while $LOADED_FEATURES is a
+      list of actual features loaded.
+  $LOAD_PATH:
+    definition: |
+      Definition:
+      Load path for scripts and binary modules by load or require.
+
+      Alias for $:.
+    explanation: |
+      Explanation:
+      List of all directories Ruby searches for a file when Kernel#load and
+      Kernel#require are invoked.
+
+      > p $: # => ["/path/to/dir1", "/path/to/dir2", ...]
+  $VERBOSE:
+    definition: |
+      Definition:
+      Stores the verbose flag. Setting it to 'true' is the same as executing
+      a script with '-w' or '-v' option.
+    explanation: |
+      Explanation:
+      Setting it to 'true' will, for example, give a warning if there is a set
+      but unused variable within the program.
+
+      Given the script:
+      > p $VERBOSE
+      > string = "random"
+
+      When it is run with -w option, it will set $VERBOSE to 'true' and give
+      appropriate warning ('assigned but unused variable - a' in this case.)
+      When it is run without an option, it will simply print out 'false' for
+      $VERBOSE global variable.
+  $DEBUG:
+    definition: |
+      Definition:
+      The debug flag, which is set by the -d switch.
+    explanation: |
+      Explanation:
+      Enabling debug output prints each exception raised to $stderr (but not
+      its backtrace). Setting this to a true value enables debug output as if
+      -d were given on the command line. Setting this to a false value disables
+      debug output.
