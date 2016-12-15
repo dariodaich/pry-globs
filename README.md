@@ -7,16 +7,16 @@
 
 ## What is it?
 
-It is a Pry plugin that enables you to find out the meaning of preset global
-variables within a Pry session.
+Pry plugin that enables you to find out the meaning of preset global variables
+within a Pry session.
 
 ## Why, o why?
 
 Often enough I come across a global variable, or a rarely used constant,
-that is unknown to me. If you ever encountered one you know that Ruby's
-internal global variables are anything but friendly named.
+whose meaning is unknown to me. If you ever encountered one, you know that Ruby's
+internal global variables are anything but named friendly.
 
-So, instead of "googling" for them each time, I decided to place them all under
+So, instead of "googling" them each time, I decided to place them all under
 my fingertips. And what place better then a Pry session!? :sunglasses:
 
 ## Installation
@@ -30,8 +30,8 @@ $ gem install pry-globs
 
 Each global variable has its _definition_ and _explanation_.
 
-_Definition_ is mostly concise general description, while an _explanation_ is
-usually has an accompanying code example.
+_Definition_ is mostly concise general description, while _explanation_ is usually
+accompanied by a code example.
 
 In order to get a _definition_ or a constant, just pass its name to a **globs**
 command:
@@ -75,21 +75,21 @@ Or when raising exception manually..
 
 Unfortunately, it is not possible to fetch data for _$'_ and _$"_
 because of the _ArgumentError_ within Pry. Pry parses an opening quote
-as an opening string quote. This can't be solved withing pry-globs,
-rather Pry should be patched. I am of the opinion that the fix isn't
-worth of someone's hour or two, or three...
+as an opening string quote. This can't be solved withing pry-globs.
+Instead, Pry should be patched. I am of the opinion the fix isn't
+worth of someone's hour or two, or three, or...
 
 ## Contributing
 
-As you can imagine, the hardest part was to fill the YAML file with all the data.
+As you can imagine, the hardest part was to fill the YAML file with the data.
 Mainly because it involved nontrivial research time. With that said, it is possible
-that you will bump in to a mistake here and there. If you: find one, wish to expand on the
+you will bump in to a mistake here and there. If you: find one, wish to expand on the
 existing data, or add your own, feel free to do so. You will have my gratitude. :bow:
 
 Although the application is a small one, test suite exists. In case you
-add code and decide to open a PR, please add tests as well.
+add code and decide to open a PR, write tests as well.
 
-If you decide to only add documentation to YAML file you don't have to add any tests.
+If you decide only to add documentation to YAML file you **do not** have to add tests.
 
 ## License
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).

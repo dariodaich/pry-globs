@@ -34,7 +34,7 @@ RSpec.describe IdentifierTable do
       let(:current_script_name) { subject.data["global_variables"]["$0"] }
 
       it "fetches definition" do
-        current_script_definition = "Contains the name of the script being executed. May be assignable.\n"
+        current_script_definition = "Definition:\nContains the name of the script being executed. May be assignable.\n"
 
         expect(current_script_name["definition"]).to eq(current_script_definition)
       end
@@ -42,6 +42,7 @@ RSpec.describe IdentifierTable do
       it "fetches explanation" do
         def current_script_explanation
           <<~EXPLANATION
+            Explanation:
             If name of the current running Ruby script is "foobar.rb", then:
 
             > p $0 # => "foobar.rb"

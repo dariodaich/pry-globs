@@ -3,8 +3,8 @@ require 'spec_helper'
 RSpec.describe RubyIdentifier, messangers: true do
   let(:cli_args)            { instance_double("CLIArg") }
   let(:identifier_table)    { IdentifierTable.new }
-  let(:definition)          { "Contains the name of the script being executed. May be assignable.\n" }
-  let(:explanation)         { "If name of the current running Ruby script is \"foobar.rb\", then:\n\n> p $0 # => \"foobar.rb\"\n" }
+  let(:definition)          { "Definition:\nContains the name of the script being executed. May be assignable.\n" }
+  let(:explanation)         { "Explanation:\nIf name of the current running Ruby script is \"foobar.rb\", then:\n\n> p $0 # => \"foobar.rb\"\n" }
   subject(:ruby_identifier) { RubyIdentifier.new(cli_args, identifier_table) }
 
   describe "#description" do
