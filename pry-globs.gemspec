@@ -4,10 +4,10 @@ Gem::Specification.new do |spec|
   spec.name     = 'pry-globs'
   spec.version  = '1.0.0'
   spec.author   = 'Dario Daic'
-  spec.email    = 'dario@daic.me'
+  spec.email    = 'dariodaic5.1@gmail.com'
 
-  spec.summary  = 'Easily decipher meaning of Ruby\'s notoriously cryptic global variables and constants within a Pry session.'
-  spec.homepage = 'https://github.com/dariodaic/pry-globs'
+  spec.summary  = 'Decipher Ruby\'s notoriously cryptic global variables and constants within a Pry session.'
+  spec.homepage = 'https://github.com/da1chy/pry-globs'
   spec.license  = 'MIT'
 
   spec.files = Dir['lib/pry-globs.rb', 'lib/pry-globs/*', 'lib/support/*']
