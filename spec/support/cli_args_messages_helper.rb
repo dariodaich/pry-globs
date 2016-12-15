@@ -3,12 +3,34 @@ module CLIArgsMessages
     attr_reader :definition, :explanation
 
     def initialize
-      @definition  = "The exception information message set by ‘raise’."
-      @explanation = "This is an explanation."
+      @definition  = "Definition:\nThe exception information message set by 'raise'.\n"
+      @explanation =<<~EXPLANATION
+        Explanation:
+        It contains the exception when it is raised but not yet handled.
+        In most cases it can be accessed within the 'rescue' clause.
+
+        Given the following code..
+        > begin
+        >   5 / 0
+        > rescue
+        >   p $! # => #<ZeroDivisionError: divided by 0>
+        > end
+
+        Or when raising exception manually..
+        > class MyError < StandardError
+        > end
+        >
+        > begin
+        >   raise MyError, "Raise it high."
+        > rescue MyError
+        >   p $!         # => #<MyError: Raise it high.>
+        >   p $!.message # => "Raise it high."
+        > end
+      EXPLANATION
     end
 
     def description
-      "#{definition}\n\n#{explanation}"
+      "#{definition}\n#{explanation}"
     end
   end
 

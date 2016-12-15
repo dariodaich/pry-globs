@@ -16,7 +16,7 @@ RSpec.describe RubyIdentifier, messangers: true do
       it "returns definition and explanation" do
         allow(cli_args).to receive(:option_present?).and_return(true)
 
-        full_description = "#{definition}\n\n#{explanation}"
+        full_description = "#{definition}\n#{explanation}"
         expect(ruby_identifier.description).to eq(full_description)
       end
     end

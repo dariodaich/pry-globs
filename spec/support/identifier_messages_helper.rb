@@ -4,7 +4,7 @@ module Identifier
       <<~MSG
         There is no information about '$xyz'.
 
-        #{pr_request}
+        Please submit data and open a PR!
       MSG
     end
 
@@ -12,14 +12,8 @@ module Identifier
       <<~MSG
         There is no information about 'UNKNOWN_CONSTANT'.
 
-        #{pr_request}
+        Please submit data and open a PR!
       MSG
-    end
-
-    private
-
-    def pr_request
-      "Please submit data and open a PR!"
     end
   end
 end

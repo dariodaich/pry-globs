@@ -10,7 +10,7 @@ RSpec.describe IdentifierTable do
       let(:constant_ruby_version) { subject.data["constants"]["RUBY_VERSION"] }
 
       it "fetches definition" do
-        ruby_version_definition ="The ruby version string (VERSION was deprecated).\n"
+        ruby_version_definition ="Definition:\nThe ruby version string (VERSION was deprecated).\n"
 
         expect(constant_ruby_version["definition"]).to eq(ruby_version_definition)
       end
@@ -18,6 +18,7 @@ RSpec.describe IdentifierTable do
       it "fetches explanation" do
         def ruby_version_explanation
           <<~EXPLANATION
+            Explanation:
             Simply print out running version of Ruby.
             Does not provide information on patch.
 

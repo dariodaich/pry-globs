@@ -15,7 +15,7 @@ class RubyIdentifier
   end
 
   def absent_msg
-    absent_from_table? ? "There is no information about '#{token}'.\nPlease submit data and open a PR!\n" : ''
+    absent_from_table? ? "There is no information about '#{token}'.\n\nPlease submit data and open a PR!\n" : ''
   end
 
   private
