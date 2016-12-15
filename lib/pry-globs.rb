@@ -1,7 +1,7 @@
 # Stdlib
 require 'yaml'
 
-# Internal requires
+# pry-globs
 require_relative 'pry-globs/cli_arg'
 require_relative 'pry-globs/cli_arg_validator'
 require_relative 'pry-globs/ruby_identifier'

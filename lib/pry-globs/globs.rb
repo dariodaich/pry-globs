@@ -1,3 +1,13 @@
+# Stdlib
+require 'yaml'
+
+# pry-globs
+require_relative 'cli_arg'
+require_relative 'cli_arg_validator'
+require_relative 'ruby_identifier'
+require_relative 'identifier_table'
+require_relative 'globs'
+
 class Globs
   attr_reader :cli_args
   attr_accessor :ruby_identifier
