@@ -1,5 +1,5 @@
 [![Gem Version](https://badge.fury.io/rb/pry-globs.svg)](https://badge.fury.io/rb/pry-globs)
-[![Build Status](https://travis-ci.org/da1chy/pry-globs.svg?branch=master)](https://travis-ci.org/DarioDaic/pry-globs)
+[![Build Status](https://travis-ci.org/da1chy/pry-globs.svg?branch=master)](https://travis-ci.org/da1chy/pry-globs)
 [![Test Coverage](https://codeclimate.com/github/DarioDaic/pry-globs/badges/coverage.svg)](https://codeclimate.com/github/DarioDaic/pry-globs/coverage)
 [![Code Climate](https://codeclimate.com/github/DarioDaic/pry-globs/badges/gpa.svg)](https://codeclimate.com/github/da1chy/pry-globs)
 
