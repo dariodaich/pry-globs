@@ -358,8 +358,10 @@ global_variables:
       > puts $_     # => "Say 'Hi'."
   $0:
     definition: |
+      Definition:
       Contains the name of the script being executed. May be assignable.
     explanation: |
+      Explanation:
       If name of the current running Ruby script is "foobar.rb", then:
 
       > p $0 # => "foobar.rb"
@@ -461,7 +463,7 @@ global_variables:
       > # Then we require the file.
       > require 'baz' # => true
       >
-      > # After we require it, the path to bar.rb is present in $"
+      > # After we require it, the path to bar.rb is present in $\"
       > $".include? "path/to/bar/baz.rb" => true
   $-0:
     definition: |
